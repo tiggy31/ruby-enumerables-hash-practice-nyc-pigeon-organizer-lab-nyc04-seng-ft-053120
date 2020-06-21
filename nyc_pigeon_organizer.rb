@@ -1,17 +1,30 @@
  require "pry"
 
 def nyc_pigeon_organizer(data)
-final_results =data.each_with_object({}) do |(key, value), final_array|
-  value.each do |inner_key, names|
-    names.each do |name|
-      if !final_array[name]
-        final_array[name] = {}
-      end
-      if !final_array[name][key]
-        final_array[name][key] = []
-      end
-    final_array[name][key].push(inner_key.to_s)
+h = {}
+
+  names_arr = data[:color].flat_map {|names,value| value }.uniq
+  #accessed the values and put them in an array,
+
+  names_arr.each do |name|
+    inner_h = {}
+
+    #get the colors of the pigeon
+    color_value = data[:color].find_all{|color, names| names.include?(name)}.collect{|color, names| color.to_s}
+    inner_h[:color] = color_value
+    #binding.pry
+
+    #get the gender of the pigeon
+    gender_value = data[:gender].find_all{|gender, names| names.include?(name)}.collect{|gender, names| gender.to_s}
+    inner_h[:gender] = gender_value
+    #get the life of the pigeon
+    lives_value = data[:lives].find_all{|lives, names| names.include?(name)}.collect{|lives, names| lives.to_s}
+    inner_h[:lives] = lives_value
+
+    #add it all to the hash! yahoo!
+    h[name] = inner_h
+    binding.pry
   end
-end
-end
+  h
+
 end
